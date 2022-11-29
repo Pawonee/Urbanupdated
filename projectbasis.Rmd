@@ -59,19 +59,21 @@ Price_2 <- Price_2 %>%
 Price_3 <- Price_2 %>%
   filter(productivity == 1)
 
-R1 <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_3)
-R1
+A <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_3)
 # For vce(robust) :
 library(sandwich)
 library(lmtest)
-coeftest(R1, vcov = vcovHC(R1, type = "HC1"))
-```
+coeftest(A, vcov = vcovHC(A, type = "HC1"))
 
-est store A
-quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male decision_maker if productivity != 0, vce(robust)
-est store B
-quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male danish_team muslim_team alone if productivity != 0, vce(robust)
-est store C
-quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male danish_team muslim_team alone decision_maker decision_maker_mixed if productivity != 0, vce(robust)
-est store D
+B <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ decision_maker, data = Price_3)
+coeftest(B, vcov = vcovHC(B, type = "HC1"))
+
+C <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round, data = Price_3)
+coeftest(C, vcov = vcovHC(C, type = "HC1"))
+
+D <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round+ decision_maker + decision_maker_mixed, data = Price_3)
+coeftest(C, vcov = vcovHC(D, type = "HC1"))
+
+library (stargazer)
+stargazer(A,B,C,D, type ="text")
 ```
