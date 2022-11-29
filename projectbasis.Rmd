@@ -4,27 +4,49 @@ author: "Pawonee"
 date: "11/28/2022"
 output: html_document
 ---
+```{r}
+library(dplyr)
+library(tidyverse)
+library(haven)
+Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
+  mutate( productivity = case_when(ethnicity == 3 ~ 0))%>%
+  mutate(productivity = case_when(couple == 4 ~ 0)) %>%
+  mutate (LnProd_1 = log(prod_1),
+          LnProd_2 = log(own_prod_2),
+          muslim_team = 0)
+Price_1 <- Price %>%
+  mutate(Muslim_sounding_team = case_when(ethnicity == 2 & couple == 1 ~ 1, TRUE ~ 0))
+    
+Price_2 <- Price_1 %>%
+  mutate(Danish_sounding_team = case_when(ethnicity == 1 & couple == 1 ~ 1, TRUE ~ 0))
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Price_2 <- Price_2 %>%
+  mutate(Alone_2nd_round = case_when(couple == 3 ~ 1, TRUE ~ 0))
+         
+Price_2 <- Price_2 %>%
+  mutate(team = 1)%>%
+  mutate(team = case_when(Danish_sounding_team == 1 ~ 2, Muslim_sounding_team ==1 ~ 3, Alone_2nd_round == 1 ~ 4))
+
+Price_2 <- Price_2 %>%
+  mutate(Team_type = case_when(team == 1 ~ "Heterogeneous", team ==2 ~ "Danish", team == 3 ~ "Muslim", team == 4 ~"Alone"))
+```
+Dummies:
+
+```{r}
+Price_2 <- Price_2 %>%
+  mutate(danish = case_when(ethnicity == 1 ~ 1, TRUE ~ 0))%>%
+  mutate(lnprodpartnertemp = case_when(Alone_2nd_round == 0 ~ log(prod_partner), TRUE ~ 0 ),
+         decision_maker = case_when(type ==1 & couple != 3 ~ 1, TRUE ~0))
+# Here, danish 0 "Muslim-sounding" 1 "Danish-sounding"
+#temporary partner variable
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+Interaction 
+-between being a decision-maker and being in a heterogeneous team
+```{r}
+Price_2 <- Price_2 %>%
+  mutate(decision_maker_mixed = case_when(muslim_team == 0 & Danish_sounding_team == 0 & Alone_2nd_round == 0 ~ decision_maker, TRUE ~ 0),
+         lnprod1alone = LnProd_1 * Alone_2nd_round)
+#name first one "D-M in heterogeneous team" and second lnprod1alone "ln(Prod_1) * alone"
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
