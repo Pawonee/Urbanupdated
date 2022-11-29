@@ -9,8 +9,7 @@ library(dplyr)
 library(tidyverse)
 library(haven)
 Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
-  mutate( productivity = case_when(ethnicity == 3 ~ 0))%>%
-  mutate(productivity = case_when(couple == 4 ~ 0)) %>%
+  mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1))%>%
   mutate (LnProd_1 = log(prod_1),
           LnProd_2 = log(own_prod_2),
           muslim_team = 0)
@@ -50,3 +49,29 @@ Price_2 <- Price_2 %>%
 #name first one "D-M in heterogeneous team" and second lnprod1alone "ln(Prod_1) * alone"
 ```
 
+*-----------------------------------------------;
+* Estimate production function
+*-----------------------------------------------;
+
+* Estimations for table
+
+```{r}
+Price_3 <- Price_2 %>%
+  filter(productivity == 1)
+
+R1 <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_3)
+R1
+# For vce(robust) :
+library(sandwich)
+library(lmtest)
+coeftest(R1, vcov = vcovHC(R1, type = "HC1"))
+```
+
+est store A
+quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male decision_maker if productivity != 0, vce(robust)
+est store B
+quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male danish_team muslim_team alone if productivity != 0, vce(robust)
+est store C
+quietly regress lnprod2 lnprod1 lnprodpartnertemp lnprod1alone male danish_team muslim_team alone decision_maker decision_maker_mixed if productivity != 0, vce(robust)
+est store D
+```
