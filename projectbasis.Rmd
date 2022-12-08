@@ -14,7 +14,7 @@ library(haven)
 ```
 
 
-
+what
 ```{r}
 Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
   mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1))%>%
