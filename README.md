@@ -21,7 +21,10 @@ In this table:
     The remaining dummies characterize team composition in round 2. 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7cb0bc8f6f6f1fc63a4e48f3565b9941a7bd1eb7
 The project is based on:
 https://www.openicpsr.org/openicpsr/project/113648/version/V1/view?path=/openicpsr/113648/fcr:versions/V1/Price_of_Prejudice_Stata_data.dta&type=file
 

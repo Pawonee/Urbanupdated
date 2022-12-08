@@ -98,6 +98,7 @@ stargazer(A,B,C,D, type ="text",
           
           )
 
+<<<<<<< HEAD
 ```
 Second table:
 
@@ -121,4 +122,6 @@ Price_4 <- Price_4 %>%
          lnprod1alone = 0,
          lnprodpartnertemp = log(prod_own))
 
+=======
+>>>>>>> 7cb0bc8f6f6f1fc63a4e48f3565b9941a7bd1eb7
 ```
