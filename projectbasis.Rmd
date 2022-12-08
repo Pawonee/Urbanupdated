@@ -2,12 +2,20 @@
 title: "projectbasis"
 author: "Pawonee"
 date: "11/28/2022"
-output: html_document
+output:
+  pdf_document: 
+    keep_tex: true
+  html_document: default
 ---
 ```{r}
 library(dplyr)
 library(tidyverse)
 library(haven)
+```
+
+
+
+```{r}
 Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
   mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1))%>%
   mutate (LnProd_1 = log(prod_1),
@@ -63,17 +71,54 @@ A <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_3)
 # For vce(robust) :
 library(sandwich)
 library(lmtest)
-coeftest(A, vcov = vcovHC(A, type = "HC1"))
+AA <- vcovHC(A, type = "HC1")
+robust_AA <- sqrt(diag(AA))
 
 B <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ decision_maker, data = Price_3)
-coeftest(B, vcov = vcovHC(B, type = "HC1"))
+BB <- vcovHC(B, type = "HC1")
+robust_BB <- sqrt(diag(BB))
 
 C <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round, data = Price_3)
-coeftest(C, vcov = vcovHC(C, type = "HC1"))
+CC <- vcovHC(C, type = "HC1")
+robust_CC <- sqrt(diag(CC))
 
 D <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round+ decision_maker + decision_maker_mixed, data = Price_3)
-coeftest(C, vcov = vcovHC(D, type = "HC1"))
+DD <- vcovHC(D, type = "HC1")
+robust_se <- sqrt(diag(DD))
 
 library (stargazer)
-stargazer(A,B,C,D, type ="text")
+stargazer(A,B,C,D, type ="text",
+          title = "Table 2:Team Production Function",
+          dep.var.labels = c("Dependent Variable: ln(prod2)"),
+          notes.label ="Significance Levels",
+          covariate.labels = c("logprod1i","logprod1j","logprod1i * Alone","Male","Danish","Muslim","Alone","Decision maker","Decision maker * Heterogeneous"),
+          no.space = TRUE,
+          se = list(robust_AA,robust_BB,robust_CC,robust_se),
+          keep.stat = c("adj.rsq","n")
+          
+          )
+
+```
+Second table:
+
+Estimating the cost of discrimination									
+																							
+*****************************************************************************************************
+*****************************************************************************************************
+```{r}
+Price_4 <- Price_2 %>%
+  filter(type == 1)%>%
+  filter(ethnicity != 3|type_day_1 != 9999|type_day_2 != 9999)%>%
+  filter(main == 1 & info == 1)
+```
+
+Predict production with own type			 		*
+Reset team composition dummies, interaction terms
+
+```{r}
+Price_4 <- Price_4 %>%
+  mutate(Alone_2nd_round == 0, 
+         lnprod1alone = 0,
+         lnprodpartnertemp = log(prod_own))
+
 ```
