@@ -185,16 +185,29 @@ pp <- exp(p)
 
 ```
 A few graphs to show the effect of independent variables on productivity, i.e. the number of envelopes stuffed in round 2 by worker i
-```{r}
+```{r, warning= FALSE}
 library(ggplot2)
 ggplot(Price_3, aes(x=LnProd_1, y=LnProd_2))+
   geom_point()+
-  stat_smooth(method = "lm", col = "red")
+  stat_smooth(method = "lm", col = "red")+
+   ggtitle("Plot of relation between number of envelopes stuffed in round 1 by worker i and log of the number of envelopes stuffed in round 2
+ by worker i")
 ```
 
-```{r}
+```{r, warning=FALSE}
 library(ggplot2)
 ggplot(Price_3, aes(x=Alone_2nd_round, y=LnProd_2))+
   geom_point()+
-  stat_smooth(method = "lm", col = "red")
+  stat_smooth(method = "lm", col = "red")+
+   ggtitle("Plot of relation between worker working alone and log of the number of envelopes stuffed in round 2
+ by worker i")
+```
+
+```{r, warning=FALSE}
+library(ggplot2)
+ggplot(Price_3, aes(x=lnprodpartnertemp, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")+
+  ggtitle("Plot of relation between number of envelopes stuffed by i’s coworker in round 2 and log of the number of envelopes stuffed in round 2
+ by worker i")
 ```
