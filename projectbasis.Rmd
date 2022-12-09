@@ -119,6 +119,7 @@ stargazer(A,B,C,D, type ="text",
           keep.stat = c("adj.rsq","n")
           
           )
+
 ```
 In this table:
 *the Dependent variable is the log of the number of envelopes stuffed in round 2
@@ -142,25 +143,58 @@ specifications on filtering the data. My assumption is that the error is
 stemming from filtering differences by "Or" vs "And"
 
 
-Second table:
+Remaining is an attempt to replicate another existing table:
+																					
+*							2. Estimating the cost of discrimination									
+*																									
+*****************************************************************************************************
+*****************************************************************************************************
 
-Estimating the cost of discrimination									
-																							
 
+
+Part 2:
 ```{r}
-Price_4 <- Price_2 %>%
-  filter(type == 1)%>%
-  filter(ethnicity != 3|type_day_1 != 9999|type_day_2 != 9999)%>%
-  filter(main == 1 & info == 1)
-```
 
-Predict production with own type			 		*
-Reset team composition dummies, interaction terms
-
-```{r}
+Price_4 <- Price_3 %>% 
+  filter(type == 1)
 Price_4 <- Price_4 %>%
-  mutate(Alone_2nd_round == 0, 
+  filter(ethnicity !=3 | type_day_1 != 9999 | type_day_2 != 9999)
+Price_4 <- Price_4 %>%
+  filter(info ==1)
+
+Price_5 <- Price_4 %>%
+  mutate(alone = 0,
          lnprod1alone = 0,
          lnprodpartnertemp = log(prod_own))
 
+m <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_5)
+mm <- vcovHC(m, type = "HC1")
+robust_m <- sqrt(diag(mm))
+n <- predict(m)
+nn <- exp(n)
+
+Price_6 <- Price_4 %>%
+  mutate(
+         lnprodpartnertemp = log(prod_other))
+
+o <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male, data = Price_6)
+oo <- vcovHC(o, type = "HC1")
+robust_o <- sqrt(diag(oo))
+p <- predict(o)
+pp <- exp(p)
+
+```
+A few graphs to show the effect of independent variables on productivity, i.e. the number of envelopes stuffed in round 2 by worker i
+```{r}
+library(ggplot2)
+ggplot(Price_3, aes(x=LnProd_1, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")
+```
+
+```{r}
+library(ggplot2)
+ggplot(Price_3, aes(x=Alone_2nd_round, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")
 ```
