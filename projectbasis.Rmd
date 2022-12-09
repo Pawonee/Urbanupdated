@@ -143,13 +143,40 @@ specifications on filtering the data. My assumption is that the error is
 stemming from filtering differences by "Or" vs "And"
 
 
-Remaining is an attempt to replicate another existing table:
-																					
-*							2. Estimating the cost of discrimination									
-*																									
-*****************************************************************************************************
-*****************************************************************************************************
 
+A few graphs to show the effect of independent variables on productivity, i.e. the number of envelopes stuffed in round 2 by worker i
+```{r, warning= FALSE}
+library(ggplot2)
+ggplot(Price_3, aes(x=LnProd_1, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")+
+   ggtitle("Plot of relation between number of envelopes stuffed in round 1 by worker i and log of the number of envelopes stuffed in round 2
+ by worker i")
+```
+
+```{r, warning=FALSE}
+library(ggplot2)
+ggplot(Price_3, aes(x=Alone_2nd_round, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")+
+   ggtitle("Plot of relation between worker working alone and log of the number of envelopes stuffed in round 2
+ by worker i")
+```
+
+```{r, warning=FALSE}
+library(ggplot2)
+ggplot(Price_3, aes(x=lnprodpartnertemp, y=LnProd_2))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")+
+  ggtitle("Plot of relation between number of envelopes stuffed by i’s coworker in round 2 and log of the number of envelopes stuffed in round 2
+ by worker i")
+```
+
+The paper moves on two second part where they create a new variable- price which gives the cost of discrimination. Remaining is an attempt to replicate another existing table:
+																					
+-----------------------------------------------
+ Estimating the cost of discrimination
+-----------------------------------------------
 
 
 Part 2:
@@ -184,30 +211,54 @@ p <- predict(o)
 pp <- exp(p)
 
 ```
-A few graphs to show the effect of independent variables on productivity, i.e. the number of envelopes stuffed in round 2 by worker i
+
+-----------------------------------------------
+ Additional Contribution to Paper Extension
+-----------------------------------------------
+
+In the existing dataset, there is a variable discrimination.  The second table is a probit based regression on how the cost varies based on ethnicity and checks its impact on discrimination. I am particularly interested to see if there is a link between just gender and Danish_sounding vs Muslim sounding on discrimination:
+
+
+```{r, comment = NA}
+library(stats)
+model_pr <- glm(discr~ Danish_sounding_team+male+LnProd_1, family = binomial(link = "probit"), data = Price_3)
+pr <- vcovHC(model_pr, type = "HC1")
+robust_pr <- sqrt(diag(pr))
+
+model_pr1 <- glm(discr~ Muslim_sounding_team+male+LnProd_1, family = binomial(link = "probit"), data = Price_3)
+pr1 <- vcovHC(model_pr1, type = "HC1")
+robust_pr1 <- sqrt(diag(pr1))
+
+stargazer(model_pr,model_pr1, type = "text",
+          keep.stat = c("adj.rsq","n"),
+          se = list(robust_AA,robust_BB,robust_CC,robust_se))
+
+
+```
+The paper finds an important result that cost of discrimination is directly proportional to probability of distribution. I didn't replicate the cost portion. 
+* But even without that the paper is questionable if we refer to my added regression table. There is no impact on discrimination from muslim sounding name. 
+* This further brings to question whether the measure was built correctly. It could have been crucial that the researchers made the field question available so the correct interpretation could be taken.
+* It is interesting to notice how productivity and gender both have a negative relation with workplace discrimination. Following graphs reflect it:
+
 ```{r, warning= FALSE}
 library(ggplot2)
-ggplot(Price_3, aes(x=LnProd_1, y=LnProd_2))+
+ggplot(Price_3, aes(x=LnProd_1, y=discr))+
   geom_point()+
   stat_smooth(method = "lm", col = "red")+
-   ggtitle("Plot of relation between number of envelopes stuffed in round 1 by worker i and log of the number of envelopes stuffed in round 2
- by worker i")
-```
+   ggtitle("Plot of relation between number of envelopes stuffed in round 1 by worker i and discrimination in workplace")
 
-```{r, warning=FALSE}
 library(ggplot2)
-ggplot(Price_3, aes(x=Alone_2nd_round, y=LnProd_2))+
+ggplot(Price_3, aes(x=Danish_sounding_team, y=discr))+
   geom_point()+
   stat_smooth(method = "lm", col = "red")+
-   ggtitle("Plot of relation between worker working alone and log of the number of envelopes stuffed in round 2
- by worker i")
-```
+   ggtitle("Plot of relation between person's name sounding Danish and discrimination in workplace")
 
-```{r, warning=FALSE}
+
 library(ggplot2)
-ggplot(Price_3, aes(x=lnprodpartnertemp, y=LnProd_2))+
+ggplot(Price_3, aes(x=male, y=discr))+
   geom_point()+
   stat_smooth(method = "lm", col = "red")+
-  ggtitle("Plot of relation between number of envelopes stuffed by i’s coworker in round 2 and log of the number of envelopes stuffed in round 2
- by worker i")
+   ggtitle("Plot of relation between gender and discrimination in workplace")
+
+
 ```

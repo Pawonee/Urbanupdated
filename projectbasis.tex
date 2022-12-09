@@ -141,25 +141,29 @@ Table 2: Team Production Function.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{Price }\OtherTok{\textless{}{-}} \FunctionTok{read\_dta}\NormalTok{(}\StringTok{"Price\_of\_Prejudice\_Stata\_data (1).dta"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{( }\AttributeTok{productivity =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{|}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{( }\AttributeTok{productivity =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{|}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{ (}\AttributeTok{LnProd\_1 =} \FunctionTok{log}\NormalTok{(prod\_1),}
           \AttributeTok{LnProd\_2 =} \FunctionTok{log}\NormalTok{(own\_prod\_2),}
           \AttributeTok{muslim\_team =} \DecValTok{0}\NormalTok{)}
 \NormalTok{Price\_1 }\OtherTok{\textless{}{-}}\NormalTok{ Price }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Muslim\_sounding\_team =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Muslim\_sounding\_team =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{2} \SpecialCharTok{\&}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }
+                                          \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}
     
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_1 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Danish\_sounding\_team =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Danish\_sounding\_team =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ couple }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{,}
+                                          \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}
 
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Alone\_2nd\_round =} \FunctionTok{case\_when}\NormalTok{(couple }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}
          
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{team =} \DecValTok{1}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{team =} \FunctionTok{case\_when}\NormalTok{(Danish\_sounding\_team }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{2}\NormalTok{, Muslim\_sounding\_team }\SpecialCharTok{==}\DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{3}\NormalTok{, Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{4}\NormalTok{))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{team =} \FunctionTok{case\_when}\NormalTok{(Danish\_sounding\_team }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{2}\NormalTok{, Muslim\_sounding\_team }
+                          \SpecialCharTok{==}\DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{3}\NormalTok{, Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{4}\NormalTok{))}
 
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Team\_type =} \FunctionTok{case\_when}\NormalTok{(team }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{"Heterogeneous"}\NormalTok{, team }\SpecialCharTok{==}\DecValTok{2} \SpecialCharTok{\textasciitilde{}} \StringTok{"Danish"}\NormalTok{, team }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{"Muslim"}\NormalTok{, team }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}}\StringTok{"Alone"}\NormalTok{))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Team\_type =} \FunctionTok{case\_when}\NormalTok{(team }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \StringTok{"Heterogeneous"}\NormalTok{, team }\SpecialCharTok{==}\DecValTok{2} \SpecialCharTok{\textasciitilde{}} \StringTok{"Danish"}\NormalTok{,}
+\NormalTok{                               team }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \StringTok{"Muslim"}\NormalTok{, team }\SpecialCharTok{==} \DecValTok{4} \SpecialCharTok{\textasciitilde{}}\StringTok{"Alone"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -169,7 +173,8 @@ Dummies:
 \begin{Highlighting}[]
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{danish =} \FunctionTok{case\_when}\NormalTok{(ethnicity }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{lnprodpartnertemp =} \FunctionTok{case\_when}\NormalTok{(Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(prod\_partner), }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{ ),}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{lnprodpartnertemp =} \FunctionTok{case\_when}\NormalTok{(Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(prod\_partner),}
+                                       \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{ ),}
          \AttributeTok{decision\_maker =} \FunctionTok{case\_when}\NormalTok{(type }\SpecialCharTok{==}\DecValTok{1} \SpecialCharTok{\&}\NormalTok{ couple }\SpecialCharTok{!=} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\DecValTok{0}\NormalTok{))}
 \CommentTok{\# Here, danish 0 "Muslim{-}sounding" 1 "Danish{-}sounding"}
 \CommentTok{\#temporary partner variable}
@@ -182,7 +187,10 @@ team
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{Price\_2 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{decision\_maker\_mixed =} \FunctionTok{case\_when}\NormalTok{(muslim\_team }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&}\NormalTok{ Danish\_sounding\_team }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&}\NormalTok{ Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ decision\_maker, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{),}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{decision\_maker\_mixed =} \FunctionTok{case\_when}\NormalTok{(muslim\_team }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&} 
+\NormalTok{                                            Danish\_sounding\_team }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&} 
+\NormalTok{                                            Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\textasciitilde{}} 
+\NormalTok{                                            decision\_maker, }\ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \DecValTok{0}\NormalTok{),}
          \AttributeTok{lnprod1alone =}\NormalTok{ LnProd\_1 }\SpecialCharTok{*}\NormalTok{ Alone\_2nd\_round)}
 \CommentTok{\#name first one "D{-}M in heterogeneous team" and second lnprod1alone "ln(Prod\_1) * alone"}
 \end{Highlighting}
@@ -207,15 +215,20 @@ Estimate production function \\
 \NormalTok{AA }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(A, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
 \NormalTok{robust\_AA }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(AA))}
 
-\NormalTok{B }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{ decision\_maker, }\AttributeTok{data =}\NormalTok{ Price\_3)}
+\NormalTok{B }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{ decision\_maker,}
+        \AttributeTok{data =}\NormalTok{ Price\_3)}
 \NormalTok{BB }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(B, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
 \NormalTok{robust\_BB }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(BB))}
 
-\NormalTok{C }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{ Danish\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Muslim\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Alone\_2nd\_round, }\AttributeTok{data =}\NormalTok{ Price\_3)}
+\NormalTok{C }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+} 
+\NormalTok{          Danish\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Muslim\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Alone\_2nd\_round, }
+        \AttributeTok{data =}\NormalTok{ Price\_3)}
 \NormalTok{CC }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(C, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
 \NormalTok{robust\_CC }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(CC))}
 
-\NormalTok{D }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{ Danish\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Muslim\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Alone\_2nd\_round}\SpecialCharTok{+}\NormalTok{ decision\_maker }\SpecialCharTok{+}\NormalTok{ decision\_maker\_mixed, }\AttributeTok{data =}\NormalTok{ Price\_3)}
+\NormalTok{D }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+} 
+\NormalTok{          Danish\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Muslim\_sounding\_team }\SpecialCharTok{+}\NormalTok{ Alone\_2nd\_round}\SpecialCharTok{+} 
+\NormalTok{          decision\_maker }\SpecialCharTok{+}\NormalTok{ decision\_maker\_mixed, }\AttributeTok{data =}\NormalTok{ Price\_3)}
 \NormalTok{DD }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(D, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
 \NormalTok{robust\_se }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(DD))}
 
@@ -224,7 +237,8 @@ Estimate production function \\
           \AttributeTok{title =} \StringTok{"Table 2:Team Production Function"}\NormalTok{,}
           \AttributeTok{dep.var.labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Dependent Variable: ln(prod2)"}\NormalTok{),}
           \AttributeTok{notes.label =}\StringTok{"Significance Levels"}\NormalTok{,}
-          \AttributeTok{covariate.labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"logprod1i"}\NormalTok{,}\StringTok{"logprod1j"}\NormalTok{,}\StringTok{"logprod1i * Alone"}\NormalTok{,}\StringTok{"Male"}\NormalTok{,}\StringTok{"Danish"}\NormalTok{,}\StringTok{"Muslim"}\NormalTok{,}\StringTok{"Alone"}\NormalTok{,}\StringTok{"Decision maker"}\NormalTok{,}\StringTok{"Decision maker * Heterogeneous"}\NormalTok{),}
+          \AttributeTok{covariate.labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"logprod1i"}\NormalTok{,}\StringTok{"logprod1j"}\NormalTok{,}\StringTok{"logprod1i * Alone"}\NormalTok{,}\StringTok{"Male"}\NormalTok{,}\StringTok{"Danish"}\NormalTok{,}\StringTok{"Muslim"}\NormalTok{,}\StringTok{"Alone"}\NormalTok{,}\StringTok{"Decision maker"}\NormalTok{,}\StringTok{"Decision maker *}
+\StringTok{                               Heterogeneous"}\NormalTok{),}
           \AttributeTok{no.space =} \ConstantTok{TRUE}\NormalTok{,}
           \AttributeTok{se =} \FunctionTok{list}\NormalTok{(robust\_AA,robust\_BB,robust\_CC,robust\_se),}
           \AttributeTok{keep.stat =} \FunctionTok{c}\NormalTok{(}\StringTok{"adj.rsq"}\NormalTok{,}\StringTok{"n"}\NormalTok{)}
@@ -234,39 +248,38 @@ Estimate production function \\
 \end{Shaded}
 
 \begin{verbatim}
-## 
-## Table 2:Team Production Function
-## ==================================================================
-##                                        Dependent variable:        
-##                                -----------------------------------
-##                                   Dependent Variable: ln(prod2)   
-##                                  (1)      (2)      (3)      (4)   
-## ------------------------------------------------------------------
-## logprod1i                      0.416*** 0.413*** 0.385*** 0.387***
-##                                (0.066)  (0.066)  (0.052)  (0.053) 
-## logprod1j                      0.416*** 0.421*** 0.385*** 0.387***
-##                                (0.066)  (0.067)  (0.052)  (0.053) 
-## logprod1i * Alone              0.398*** 0.401***  0.444    0.443  
-##                                (0.064)  (0.065)  (0.285)  (0.287) 
-## Male                            0.027    0.026    0.020    0.020  
-##                                (0.027)  (0.027)  (0.033)  (0.033) 
-## Danish                                   -0.008            -0.028 
-##                                         (0.024)           (0.039) 
-## Muslim                                                     0.038  
-##                                                           (0.047) 
-## Alone                                             0.047*  0.064** 
-##                                                  (0.025)  (0.032) 
-## Decision maker                                    -0.024   -0.025 
-##                                                  (0.035)  (0.035) 
-## Decision maker * Heterogeneous                    -0.354   -0.335 
-##                                                  (1.411)  (1.422) 
-## Constant                        0.849    0.848   1.135*** 1.117***
-##                                (0.517)  (0.519)  (0.369)  (0.373) 
-## ------------------------------------------------------------------
-## Observations                     147      147      147      147   
-## Adjusted R2                     0.465    0.461    0.463    0.456  
-## ==================================================================
-## Significance Levels                    *p<0.1; **p<0.05; ***p<0.01
+Table 2:Team Production Function
+=======================================================
+                            Dependent variable:        
+                    -----------------------------------
+                       Dependent Variable: ln(prod2)   
+                      (1)      (2)      (3)      (4)   
+-------------------------------------------------------
+logprod1i           0.416*** 0.413*** 0.385*** 0.387***
+                    (0.066)  (0.066)  (0.052)  (0.053) 
+logprod1j           0.416*** 0.421*** 0.385*** 0.387***
+                    (0.066)  (0.067)  (0.052)  (0.053) 
+logprod1i * Alone   0.398*** 0.401***  0.444    0.443  
+                    (0.064)  (0.065)  (0.285)  (0.287) 
+Male                 0.027    0.026    0.020    0.020  
+                    (0.027)  (0.027)  (0.033)  (0.033) 
+Danish                        -0.008            -0.028 
+                             (0.024)           (0.039) 
+Muslim                                          0.038  
+                                               (0.047) 
+Alone                                  0.047*  0.064** 
+                                      (0.025)  (0.032) 
+Decision maker                         -0.024   -0.025 
+                                      (0.035)  (0.035) 
+Heterogeneous                          -0.354   -0.335 
+                                      (1.411)  (1.422) 
+Constant             0.849    0.848   1.135*** 1.117***
+                    (0.517)  (0.519)  (0.369)  (0.373) 
+-------------------------------------------------------
+Observations          147      147      147      147   
+Adjusted R2          0.465    0.461    0.463    0.456  
+=======================================================
+Significance Levels         *p<0.1; **p<0.05; ***p<0.01
 \end{verbatim}
 
 In this table: \emph{the Dependent variable is the log of the number of
@@ -295,30 +308,234 @@ remaining dummies characterize team composition in round 2.
   ``Or'' vs ``And''
 \end{itemize}
 
-Second table:
-
-Estimating the cost of discrimination
+A few graphs to show the effect of independent variables on
+productivity, i.e.~the number of envelopes stuffed in round 2 by worker
+i
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{Price\_4 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(ethnicity }\SpecialCharTok{!=} \DecValTok{3}\SpecialCharTok{|}\NormalTok{type\_day\_1 }\SpecialCharTok{!=} \DecValTok{9999}\SpecialCharTok{|}\NormalTok{type\_day\_2 }\SpecialCharTok{!=} \DecValTok{9999}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(main }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ info }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{LnProd\_1, }\AttributeTok{y=}\NormalTok{LnProd\_2))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between number of envelopes stuffed in round 1 by worker i and log of the number of envelopes stuffed in round 2}
+\StringTok{ by worker i"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Predict production with own type * Reset team composition dummies,
-interaction terms
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-6-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Alone\_2nd\_round, }\AttributeTok{y=}\NormalTok{LnProd\_2))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between worker working alone and log of the number of envelopes stuffed in round 2}
+\StringTok{ by worker i"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{lnprodpartnertemp, }\AttributeTok{y=}\NormalTok{LnProd\_2))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between number of envelopes stuffed by i’s coworker in round 2 and log of the number of envelopes stuffed in round 2}
+\StringTok{ by worker i"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+The paper moves on two second part where they create a new variable-
+price which gives the cost of discrimination. Remaining is an attempt to
+replicate another existing table:
+
+\begin{longtable}[]{@{}c@{}}
+\toprule
+\endhead
+Estimating the cost of discrimination \\
+\bottomrule
+\end{longtable}
+
+Part 2:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Price\_4 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_3 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
 \NormalTok{Price\_4 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_4 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(Alone\_2nd\_round }\SpecialCharTok{==} \DecValTok{0}\NormalTok{, }
+  \FunctionTok{filter}\NormalTok{(ethnicity }\SpecialCharTok{!=}\DecValTok{3} \SpecialCharTok{|}\NormalTok{ type\_day\_1 }\SpecialCharTok{!=} \DecValTok{9999} \SpecialCharTok{|}\NormalTok{ type\_day\_2 }\SpecialCharTok{!=} \DecValTok{9999}\NormalTok{)}
+\NormalTok{Price\_4 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_4 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(info }\SpecialCharTok{==}\DecValTok{1}\NormalTok{)}
+
+\NormalTok{Price\_5 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_4 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{alone =} \DecValTok{0}\NormalTok{,}
          \AttributeTok{lnprod1alone =} \DecValTok{0}\NormalTok{,}
          \AttributeTok{lnprodpartnertemp =} \FunctionTok{log}\NormalTok{(prod\_own))}
+
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male, }\AttributeTok{data =}\NormalTok{ Price\_5)}
+\NormalTok{mm }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(m, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
+\NormalTok{robust\_m }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(mm))}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(m)}
+\NormalTok{nn }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(n)}
+
+\NormalTok{Price\_6 }\OtherTok{\textless{}{-}}\NormalTok{ Price\_4 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+         \AttributeTok{lnprodpartnertemp =} \FunctionTok{log}\NormalTok{(prod\_other))}
+
+\NormalTok{o }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(LnProd\_2 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ LnProd\_1}\SpecialCharTok{+}\NormalTok{lnprodpartnertemp}\SpecialCharTok{+}\NormalTok{lnprod1alone}\SpecialCharTok{+}\NormalTok{male, }\AttributeTok{data =}\NormalTok{ Price\_6)}
+\NormalTok{oo }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(o, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
+\NormalTok{robust\_o }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(oo))}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(o)}
+\NormalTok{pp }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(p)}
 \end{Highlighting}
 \end{Shaded}
 
+\begin{longtable}[]{@{}c@{}}
+\toprule
+\endhead
+Additional Contribution to Paper Extension \\
+\bottomrule
+\end{longtable}
+
+In the existing dataset, there is a variable discrimination. The second
+table is a probit based regression on how the cost varies based on
+ethnicity and checks its impact on discrimination. I am particularly
+interested to see if there is a link between just gender and
+Danish\_sounding vs Muslim sounding on discrimination:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(stats)}
+\NormalTok{model\_pr }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(discr}\SpecialCharTok{\textasciitilde{}}\NormalTok{ Danish\_sounding\_team}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{LnProd\_1, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{(}\AttributeTok{link =} \StringTok{"probit"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ Price\_3)}
+\NormalTok{pr }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(model\_pr, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
+\NormalTok{robust\_pr }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(pr))}
+
+\NormalTok{model\_pr1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(discr}\SpecialCharTok{\textasciitilde{}}\NormalTok{ Muslim\_sounding\_team}\SpecialCharTok{+}\NormalTok{male}\SpecialCharTok{+}\NormalTok{LnProd\_1, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{(}\AttributeTok{link =} \StringTok{"probit"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ Price\_3)}
+\NormalTok{pr1 }\OtherTok{\textless{}{-}} \FunctionTok{vcovHC}\NormalTok{(model\_pr1, }\AttributeTok{type =} \StringTok{"HC1"}\NormalTok{)}
+\NormalTok{robust\_pr1 }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(pr1))}
+
+\FunctionTok{stargazer}\NormalTok{(model\_pr,model\_pr1, }\AttributeTok{type =} \StringTok{"text"}\NormalTok{,}
+          \AttributeTok{keep.stat =} \FunctionTok{c}\NormalTok{(}\StringTok{"adj.rsq"}\NormalTok{,}\StringTok{"n"}\NormalTok{),}
+          \AttributeTok{se =} \FunctionTok{list}\NormalTok{(robust\_AA,robust\_BB,robust\_CC,robust\_se))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+=================================================
+                         Dependent variable:     
+                     ----------------------------
+                                discr            
+                          (1)            (2)     
+-------------------------------------------------
+Danish_sounding_team    2.250***                 
+                                                 
+                                                 
+Muslim_sounding_team                    6.224    
+                                                 
+                                                 
+male                   -0.623***      -0.472***  
+                        (0.027)        (0.027)   
+                                                 
+LnProd_1               -1.429***      -0.407***  
+                        (0.066)        (0.066)   
+                                                 
+Constant                6.291***      1.456***   
+                        (0.517)        (0.519)   
+                                                 
+-------------------------------------------------
+Observations              124            124     
+=================================================
+Note:                 *p<0.1; **p<0.05; ***p<0.01
+\end{verbatim}
+
+The paper finds an important result that cost of discrimination is
+directly proportional to probability of distribution. I didn't replicate
+the cost portion. * But even without that the paper is questionable if
+we refer to my added regression table. There is no impact on
+discrimination from muslim sounding name. * This further brings to
+question whether the measure was built correctly. It could have been
+crucial that the researchers made the field question available so the
+correct interpretation could be taken. * It is interesting to notice how
+productivity and gender both have a negative relation with workplace
+discrimination. Following graphs reflect it:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{LnProd\_1, }\AttributeTok{y=}\NormalTok{discr))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between number of envelopes stuffed in round 1 by worker i and discrimination in workplace"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Danish\_sounding\_team, }\AttributeTok{y=}\NormalTok{discr))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between person\textquotesingle{}s name sounding Danish and discrimination in workplace"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-11-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(Price\_3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{male, }\AttributeTok{y=}\NormalTok{discr))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}\SpecialCharTok{+}
+   \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Plot of relation between gender and discrimination in workplace"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{projectbasis_files/figure-latex/unnamed-chunk-11-3.pdf}
 
 \end{document}
