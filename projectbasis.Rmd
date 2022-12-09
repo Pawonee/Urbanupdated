@@ -238,7 +238,7 @@ stargazer(model_pr,model_pr1, type = "text",
 The paper finds an important result that cost of discrimination is directly proportional to probability of distribution. I didn't replicate the cost portion. 
 * But even without that the paper is questionable if we refer to my added regression table. There is no impact on discrimination from muslim sounding name. 
 * This further brings to question whether the measure was built correctly. It could have been crucial that the researchers made the field question available so the correct interpretation could be taken.
-* It is interesting to notice how productivity and gender both have a negative relation with workplace discrimination. Following graphs reflect it:
+* It is interesting to notice how the productivity and gender both have a negative relation with workplace discrimination. Following graphs reflect it:
 
 ```{r, warning= FALSE}
 library(ggplot2)
