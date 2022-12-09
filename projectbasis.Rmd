@@ -1,20 +1,25 @@
 ---
-title: "projectbasis"
-author: "Pawonee"
+title: "The Price of Prejudice"
+author: 'Replication by: Pawonee Khadka, University of Alabama'
 date: "11/28/2022"
 output:
-  pdf_document: 
-    keep_tex: true
+  word_document: default
+  pdf_document:
+    keep_tex: yes
   html_document: default
 ---
-```{r}
+
+The paper is based on a field experiment that goes on to investigate ethnic prejudice in the workplace. The authors want to see how potential discriminators respond to changes in the cost of discrimination. 
+
+```{r, warning=FALSE, message=FALSE}
 library(dplyr)
 library(tidyverse)
 library(haven)
 ```
 
+All analysis for the original paper was done using STATA and all data and necessary code instructions was made publicly available.
+With my replication work, I didn't have much to do with the raw data, but jumped into replication right away. Following is the chuck for replication of Table 2: Team Production Function.
 
-what
 ```{r}
 Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
   mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1))%>%
@@ -57,13 +62,13 @@ Price_2 <- Price_2 %>%
 #name first one "D-M in heterogeneous team" and second lnprod1alone "ln(Prod_1) * alone"
 ```
 
-*-----------------------------------------------;
-* Estimate production function
-*-----------------------------------------------;
+-----------------------------------------------
+ Estimate production function
+-----------------------------------------------
 
-* Estimations for table
 
-```{r}
+
+```{r, warning=FALSE, message=FALSE}
 Price_3 <- Price_2 %>%
   filter(productivity == 1)
 
@@ -97,15 +102,27 @@ stargazer(A,B,C,D, type ="text",
           keep.stat = c("adj.rsq","n")
           
           )
-
-<<<<<<< HEAD
 ```
+In this table:
+*the Dependent variable is the log of the number of envelopes stuffed in round 2 by worker i
+*prod1i is the number of envelopes stuffed in round 1 by worker i
+*prod1j is the number of envelopes stuffed by i’s coworker in round 2
+*Alone is a dummy set to 1 if worker i works alone in round 2
+*Male is worker i’s gender 
+*Decision maker indicates if worker i makes a choice of coworker 
+*The remaining dummies characterize team composition in round 2. 
+
+
+* Two main observations can be made here:
+* The table replication is not exact. This is because of tiny differences between softwares. I have used the stargazer package which allows for professional tables, yet some differences remain as compared to original table.
+* There is a key difference to mark here. The number of observations, in this replication is 147 unlike 140 in the paper. This has led to some minor chane in statistic. The code was explained fairly well, however, authors did not provide specifications on filtering the data. My assumption is that the error is stemming from filtering differences by "Or" vs "And"
+
+
 Second table:
 
 Estimating the cost of discrimination									
 																							
-*****************************************************************************************************
-*****************************************************************************************************
+
 ```{r}
 Price_4 <- Price_2 %>%
   filter(type == 1)%>%
@@ -122,6 +139,4 @@ Price_4 <- Price_4 %>%
          lnprod1alone = 0,
          lnprodpartnertemp = log(prod_own))
 
-=======
->>>>>>> 7cb0bc8f6f6f1fc63a4e48f3565b9941a7bd1eb7
 ```
