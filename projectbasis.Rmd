@@ -7,7 +7,9 @@ output:
     keep_tex: yes
 ---
 
-The paper is based on a field experiment that goes on to investigate ethnic prejudice in the workplace. The authors want to see how potential discriminators respond to changes in the cost of discrimination. 
+The paper is based on a field experiment that goes on to investigate ethnic 
+prejudice in the workplace. The authors want to see how potential discriminators
+respond to changes in the cost of discrimination. 
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -15,37 +17,45 @@ library(tidyverse)
 library(haven)
 ```
 
-All analysis for the original paper was done using STATA and all data and necessary code instructions was made publicly available.
-With my replication work, I didn't have much to do with the raw data, but jumped into replication right away. Following is the chuck for replication of Table 2: Team Production Function.
+All analysis for the original paper was done using STATA and all data and 
+necessary code instructions was made publicly available.
+With my replication work, I didn't have much to do with the raw data, but 
+jumped into replication right away. Following is the chuck for replication of 
+Table 2: Team Production Function.
 
 ```{r}
 Price <- read_dta("Price_of_Prejudice_Stata_data (1).dta") %>%
-  mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1))%>%
+  mutate( productivity = case_when(ethnicity == 3 | couple == 4 ~ 0, TRUE ~ 1)) %>%
   mutate (LnProd_1 = log(prod_1),
           LnProd_2 = log(own_prod_2),
           muslim_team = 0)
 Price_1 <- Price %>%
-  mutate(Muslim_sounding_team = case_when(ethnicity == 2 & couple == 1 ~ 1, TRUE ~ 0))
+  mutate(Muslim_sounding_team = case_when(ethnicity == 2 & couple == 1 ~ 1, 
+                                          TRUE ~ 0))
     
 Price_2 <- Price_1 %>%
-  mutate(Danish_sounding_team = case_when(ethnicity == 1 & couple == 1 ~ 1, TRUE ~ 0))
+  mutate(Danish_sounding_team = case_when(ethnicity == 1 & couple == 1 ~ 1,
+                                          TRUE ~ 0))
 
 Price_2 <- Price_2 %>%
   mutate(Alone_2nd_round = case_when(couple == 3 ~ 1, TRUE ~ 0))
          
 Price_2 <- Price_2 %>%
   mutate(team = 1)%>%
-  mutate(team = case_when(Danish_sounding_team == 1 ~ 2, Muslim_sounding_team ==1 ~ 3, Alone_2nd_round == 1 ~ 4))
+  mutate(team = case_when(Danish_sounding_team == 1 ~ 2, Muslim_sounding_team 
+                          ==1 ~ 3, Alone_2nd_round == 1 ~ 4))
 
 Price_2 <- Price_2 %>%
-  mutate(Team_type = case_when(team == 1 ~ "Heterogeneous", team ==2 ~ "Danish", team == 3 ~ "Muslim", team == 4 ~"Alone"))
+  mutate(Team_type = case_when(team == 1 ~ "Heterogeneous", team ==2 ~ "Danish",
+                               team == 3 ~ "Muslim", team == 4 ~"Alone"))
 ```
 Dummies:
 
 ```{r}
 Price_2 <- Price_2 %>%
   mutate(danish = case_when(ethnicity == 1 ~ 1, TRUE ~ 0))%>%
-  mutate(lnprodpartnertemp = case_when(Alone_2nd_round == 0 ~ log(prod_partner), TRUE ~ 0 ),
+  mutate(lnprodpartnertemp = case_when(Alone_2nd_round == 0 ~ log(prod_partner),
+                                       TRUE ~ 0 ),
          decision_maker = case_when(type ==1 & couple != 3 ~ 1, TRUE ~0))
 # Here, danish 0 "Muslim-sounding" 1 "Danish-sounding"
 #temporary partner variable
@@ -55,7 +65,10 @@ Interaction
 -between being a decision-maker and being in a heterogeneous team
 ```{r}
 Price_2 <- Price_2 %>%
-  mutate(decision_maker_mixed = case_when(muslim_team == 0 & Danish_sounding_team == 0 & Alone_2nd_round == 0 ~ decision_maker, TRUE ~ 0),
+  mutate(decision_maker_mixed = case_when(muslim_team == 0 & 
+                                            Danish_sounding_team == 0 & 
+                                            Alone_2nd_round == 0 ~ 
+                                            decision_maker, TRUE ~ 0),
          lnprod1alone = LnProd_1 * Alone_2nd_round)
 #name first one "D-M in heterogeneous team" and second lnprod1alone "ln(Prod_1) * alone"
 ```
@@ -66,7 +79,7 @@ Price_2 <- Price_2 %>%
 
 
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, comment = NA}
 Price_3 <- Price_2 %>%
   filter(productivity == 1)
 
@@ -77,15 +90,20 @@ library(lmtest)
 AA <- vcovHC(A, type = "HC1")
 robust_AA <- sqrt(diag(AA))
 
-B <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ decision_maker, data = Price_3)
+B <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ decision_maker,
+        data = Price_3)
 BB <- vcovHC(B, type = "HC1")
 robust_BB <- sqrt(diag(BB))
 
-C <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round, data = Price_3)
+C <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ 
+          Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round, 
+        data = Price_3)
 CC <- vcovHC(C, type = "HC1")
 robust_CC <- sqrt(diag(CC))
 
-D <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round+ decision_maker + decision_maker_mixed, data = Price_3)
+D <- lm(LnProd_2 ~ LnProd_1+lnprodpartnertemp+lnprod1alone+male+ 
+          Danish_sounding_team + Muslim_sounding_team + Alone_2nd_round+ 
+          decision_maker + decision_maker_mixed, data = Price_3)
 DD <- vcovHC(D, type = "HC1")
 robust_se <- sqrt(diag(DD))
 
@@ -94,7 +112,8 @@ stargazer(A,B,C,D, type ="text",
           title = "Table 2:Team Production Function",
           dep.var.labels = c("Dependent Variable: ln(prod2)"),
           notes.label ="Significance Levels",
-          covariate.labels = c("logprod1i","logprod1j","logprod1i * Alone","Male","Danish","Muslim","Alone","Decision maker","Decision maker * Heterogeneous"),
+          covariate.labels = c("logprod1i","logprod1j","logprod1i * Alone","Male","Danish","Muslim","Alone","Decision maker","Decision maker *
+                               Heterogeneous"),
           no.space = TRUE,
           se = list(robust_AA,robust_BB,robust_CC,robust_se),
           keep.stat = c("adj.rsq","n")
@@ -102,7 +121,8 @@ stargazer(A,B,C,D, type ="text",
           )
 ```
 In this table:
-*the Dependent variable is the log of the number of envelopes stuffed in round 2 by worker i
+*the Dependent variable is the log of the number of envelopes stuffed in round 2
+ by worker i
 *prod1i is the number of envelopes stuffed in round 1 by worker i
 *prod1j is the number of envelopes stuffed by i’s coworker in round 2
 *Alone is a dummy set to 1 if worker i works alone in round 2
@@ -112,8 +132,14 @@ In this table:
 
 
 * Two main observations can be made here:
-* The table replication is not exact. This is because of tiny differences between softwares. I have used the stargazer package which allows for professional tables, yet some differences remain as compared to original table.
-* There is a key difference to mark here. The number of observations, in this replication is 147 unlike 140 in the paper. This has led to some minor chane in statistic. The code was explained fairly well, however, authors did not provide specifications on filtering the data. My assumption is that the error is stemming from filtering differences by "Or" vs "And"
+* The table replication is not exact. This is because of tiny differences 
+between softwares. I have used the stargazer package which allows for 
+professional tables, yet some differences remain as compared to original table.
+* There is a key difference to mark here. The number of observations, in this
+replication is 147 unlike 140 in the paper. This has led to some minor chane in
+statistic. The code was explained fairly well, however, authors did not provide 
+specifications on filtering the data. My assumption is that the error is 
+stemming from filtering differences by "Or" vs "And"
 
 
 Second table:
