@@ -7,7 +7,7 @@ output:
     keep_tex: yes
 ---
 
-The paper is based on a field experiment that goes on to investigate ethnic 
+The paper is based on a field experiment that goes on to investigate the ethnic 
 prejudice in the workplace. The authors want to see how potential discriminators
 respond to changes in the cost of discrimination. 
 

@@ -21,13 +21,14 @@ In this table:
     The remaining dummies characterize team composition in round 2. 
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7cb0bc8f6f6f1fc63a4e48f3565b9941a7bd1eb7
 The project is based on:
 https://www.openicpsr.org/openicpsr/project/113648/version/V1/view?path=/openicpsr/113648/fcr:versions/V1/Price_of_Prejudice_Stata_data.dta&type=file
 
 https://pubs.aeaweb.org/doi/pdfplus/10.1257/app.20150241
-
-The follwoing is the original code for replication of Table 2. Please refer to the markdown/pdf document for my replication codes.
-
 
 1. Estimating the production function									
 
@@ -151,4 +152,84 @@ estout Production_function,
 
 
 
+*****************************************************************************************************
+*****************************************************************************************************
+*																									
+*							2. Estimating the cost of discrimination									
+*																									
+*****************************************************************************************************
+*****************************************************************************************************
 
+
+
+
+
+
+
+
+
+
+
+*****************************************************
+* Delete uninformative observations					*
+*****************************************************
+
+drop if type != 1			// keep only decision makers
+drop if ethnicity == 3 | type_day_1 == 9999 | type_day_2 == 9999 // drop if decision-maker or candidate does not have Muslim-sounding or Danish-sounding name
+drop if (main==1 & info==0)
+
+*****************************************************
+* Predict production with own type			 		*
+*****************************************************
+
+*** Resetting variables ***
+* Reset team composition dummies
+replace alone = 0 
+
+* Reset interaction terms
+replace lnprod1alone = 0
+
+* Partner productivity if partner was own type
+replace lnprodpartnertemp = ln(prod_own)
+
+*** Prediction of production with own type***
+predict est_own								// predict productivity with own type
+replace est_own = exp(est_own)				// converting to productivity (not on log scale)
+
+
+*****************************************************	
+* Predict production with other type			 	*
+*****************************************************
+
+* Partner productivity if partner was other type
+replace lnprodpartnertemp = ln(prod_other)
+
+*** Prediction of production with other type***
+predict est_other								// predict productivity with other type
+replace est_other = exp(est_other)				// converting to productivity (not on log scale)
+
+
+*****************************************************
+* Estimate cost										*
+*****************************************************
+
+* Estimated cost
+generate cost_envelopes = est_other - est_own
+label variable cost_envelopes "Cost (#envelopes)"
+
+* transform into Euros
+generate cost_euro = cost_envelopes * 4 / 7.44  // each envelope paid DKK 4, exchange rate DKK/EUR set to 7.44
+label variable cost_euro "Cost (�)"
+
+
+*****************************************************
+* Delete temporary productivity variables							
+*****************************************************
+drop  _est_A _est_B _est_C _est_D _est_Production_function	// stored productivity estimates
+drop  muslim_team danish_team alone lnprodpartnertemp decision_maker decision_maker_mixed lnprod1alone lnprod1 lnprod2		// variables for estimation
+
+
+
+
+*******************************************************
+Any additional work is few analysis on my part.
